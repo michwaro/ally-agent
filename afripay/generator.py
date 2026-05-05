@@ -65,3 +65,37 @@ def generate_scaffold(provider_name: str, framework: str) -> str:
     )
     content = response.choices[0].message.content
     return content.strip() if content else ""
+
+
+def generate_tests(provider_name: str, framework: str, scaffold_code: str) -> str:
+    """Generate pytest tests for scaffold code."""
+    prompt = f"""
+Generate a pytest test file for a Python {framework} integration module.
+
+Provider name:
+{provider_name}
+
+Scaffold code:
+{scaffold_code}
+
+Requirements:
+- Import the generated module as integration.
+- Test the primary successful provider flow.
+- Test provider or network error handling where possible.
+- Test webhook signature verification behavior when a webhook handler exists.
+- Test idempotency behavior when the scaffold includes idempotency handling.
+- Return only Python test code, with no markdown fences or commentary.
+""".strip()
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "system",
+                "content": "You generate focused pytest files for secure Python integrations.",
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+    content = response.choices[0].message.content
+    return content.strip() if content else ""
