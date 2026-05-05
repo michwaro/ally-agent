@@ -1,0 +1,40 @@
+{
+  "name": "mpesa",
+  "display_name": "M-Pesa Daraja",
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
+    "env_vars": [
+      "MPESA_CONSUMER_KEY",
+      "MPESA_CONSUMER_SECRET",
+      "MPESA_BUSINESS_SHORTCODE",
+      "MPESA_PASSKEY",
+      "MPESA_CALLBACK_URL"
+    ]
+  },
+  "endpoints": {
+    "stk_push": {
+      "method": "POST",
+      "url": "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    },
+    "stk_push_query": {
+      "method": "POST",
+      "url": "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
+    },
+    "c2b_register_url": {
+      "method": "POST",
+      "url": "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
+    },
+    "c2b_simulate": {
+      "method": "POST",
+      "url": "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate"
+    }
+  },
+  "webhook": {
+    "verification_method": "ip_allowlist+resultcode",
+    "allowed_ips": [
+      "TODO: confirm Safaricom Daraja callback source IP ranges before enforcing IP allowlisting"
+    ]
+  },
+  "sandbox_base_url": "https://sandbox.safaricom.co.ke"
+}

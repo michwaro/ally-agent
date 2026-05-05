@@ -1,0 +1,23 @@
+{
+  "name": "at",
+  "display_name": "Africa's Talking",
+  "auth": {
+    "type": "api_key",
+    "env_vars": [
+      "AT_USERNAME",
+      "AT_API_KEY",
+      "AT_SENDER_ID"
+    ]
+  },
+  "endpoints": {
+    "send_sms": {
+      "method": "POST",
+      "url": "https://api.sandbox.africastalking.com/version1/messaging"
+    },
+    "send_bulk_sms": {
+      "method": "POST",
+      "url": "https://api.sandbox.africastalking.com/version1/messaging/bulk"
+    }
+  },
+  "sandbox_base_url": "https://api.sandbox.africastalking.com"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "paystack",
+  "display_name": "Paystack",
+  "auth": {
+    "type": "bearer_token",
+    "env_vars": [
+      "PAYSTACK_SECRET_KEY"
+    ]
+  },
+  "endpoints": {
+    "transaction_initialize": {
+      "method": "POST",
+      "url": "https://api.paystack.co/transaction/initialize"
+    },
+    "transaction_verify": {
+      "method": "GET",
+      "url": "https://api.paystack.co/transaction/verify/{reference}"
+    }
+  },
+  "webhook": {
+    "verification_method": "hmac_sha512",
+    "signature_header": "x-paystack-signature",
+    "allowed_ips": [
+      "52.31.139.75",
+      "52.49.173.169",
+      "52.214.14.220"
+    ]
+  },
+  "sandbox_base_url": "https://api.paystack.co"
+}
