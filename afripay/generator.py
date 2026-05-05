@@ -99,3 +99,47 @@ Requirements:
     )
     content = response.choices[0].message.content
     return content.strip() if content else ""
+
+
+def generate_readme(
+    provider_name: str,
+    framework: str,
+    scaffold_code: str,
+    security_rules: dict[str, Any],
+) -> str:
+    """Generate a README explaining scaffold security decisions."""
+    rules_context = json.dumps(security_rules, indent=2)
+    prompt = f"""
+Generate a concise README.md section for a Python {framework} integration scaffold.
+
+Provider name:
+{provider_name}
+
+Security rules:
+{rules_context}
+
+Scaffold code:
+{scaffold_code}
+
+Requirements:
+- Explain in plain English what the scaffold does.
+- Explain why webhook signature verification is implemented the way it is for this provider.
+- Use the security rules as the source of truth for verification behavior.
+- List the environment variables developers must set before using the scaffold.
+- Include provider-specific gotchas from the rules, such as when a provider has no HMAC.
+- Keep the README concise and practical.
+- Return only Markdown content, with no markdown fences or commentary.
+""".strip()
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "system",
+                "content": "You generate concise security-focused README documentation.",
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+    content = response.choices[0].message.content
+    return content.strip() if content else ""
