@@ -9,7 +9,7 @@ mpesa:
     - "MPESA_BUSINESS_SHORTCODE"
     - "MPESA_PASSKEY"
     - "MPESA_CALLBACK_URL"
-  notes: "M-Pesa Daraja callbacks do not use an HMAC signature in this scaffold design. Verification relies on callback source allowlisting plus validating successful provider ResultCode values before treating a callback as successful."
+  notes: "M-Pesa Daraja callbacks do not use an HMAC signature in this Ally analysis design. Verification relies on callback source allowlisting plus validating successful ResultCode values before treating a callback as successful."
 
 paystack:
   signature_algorithm: "hmac_sha512"
@@ -26,4 +26,4 @@ at:
     - "AT_USERNAME"
     - "AT_API_KEY"
     - "AT_SENDER_ID"
-  notes: "Africa's Talking SMS has no webhook verification requirement for this MVP provider spec."
+  notes: "Africa's Talking SMS has no webhook verification requirement for this MVP framework file."

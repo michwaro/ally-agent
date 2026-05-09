@@ -1,26 +1,26 @@
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from afripay.generator import generate_scaffold
+from ally.analyzer import generate_analysis
 
 
-def test_generate_scaffold_returns_mocked_code_for_mpesa_fastapi() -> None:
-    mocked_code = "# generated scaffold\nMPESA_MARKER = True"
+def test_generate_analysis_returns_mocked_text_for_report() -> None:
+    mocked_analysis = "# Analysis\nRIGHTS_MARKER = True"
     mock_response = SimpleNamespace(
         choices=[
             SimpleNamespace(
-                message=SimpleNamespace(content=mocked_code),
+                message=SimpleNamespace(content=mocked_analysis),
             )
         ]
     )
     mock_client = Mock()
     mock_client.chat.completions.create.return_value = mock_response
 
-    with patch("afripay.generator.OpenAI", return_value=mock_client):
-        result = generate_scaffold("mpesa", "fastapi")
+    with patch("ally.analyzer.OpenAI", return_value=mock_client):
+        result = generate_analysis("test report", "mpesa")
 
     assert result
-    assert "MPESA_MARKER" in result
+    assert "RIGHTS_MARKER" in result
 
     create_call = mock_client.chat.completions.create
     create_call.assert_called_once()
@@ -29,3 +29,4 @@ def test_generate_scaffold_returns_mocked_code_for_mpesa_fastapi() -> None:
 
     prompt = kwargs["messages"][1]["content"]
     assert "ip_allowlist+resultcode" in prompt
+    assert "test report" in prompt
