@@ -1,25 +1,36 @@
-# AGENTS.md — AfriPay Security Scaffold Agent
+# AGENTS.md — Ally: Community Voice & Accountability Agent
 
 ## Setup
-- Python 3.11+, install with: `pip install -e ".[dev]"`
-- Copy `.env.example` to `.env` and fill in sandbox credentials
-- Verify setup: `python -m afripay --help`
+- Python 3.11+: `pip install -e ".[dev]"`
+- Copy `.env.example` to `.env`, set OPENAI_API_KEY (optional —
+  deterministic mode works without it)
+- Verify: `python -m ally --help`
+- Serve: `ally serve` → open http://localhost:8765
+
+## Sub-agents (orchestrator.py)
+- **Intake** — validates submission, anonymizes metadata
+- **Translator** — detects language, translates to English for analysis
+- **Classifier** — maps to: rights violation | resource exploitation |
+  broken commitment | conflict trigger
+- **RightsMapper** — links to African Charter, UDHR, national
+  constitutions in frameworks/
+- **ReportGenerator** — assembles structured Markdown accountability
+  brief from prior agent outputs
 
 ## Testing
 - Run: `pytest -q`
-- All tests must pass before any PR or commit
-- Test files live in `tests/` and mirror the source structure
-- Always add a test for new providers before considering a task done
+- Mock all OpenAI and HTTP calls in tests
+- orchestrate() must work without OPENAI_API_KEY (deterministic mode)
 
 ## Style
-- Type hints required on all functions
-- No print() — use `rich.console.Console` for output
-- Provider spec files are JSON, security rules are YAML — do not mix
-- Generated output code must include a comment block explaining each 
-  security decision made
+- Type hints on all functions
+- No print() — use rich.console.Console in CLI, SSE events in server
+- Event JSON shape is fixed — never add or remove fields
+- Sub-agent names are fixed — never rename them
 
 ## Review guidelines
-- Always show a diff before applying multi-file changes
-- Generated scaffolds must include webhook signature verification — 
-  this is non-negotiable, flag it if a provider spec doesn't define one
-- Keep the CLI surface minimal; resist adding flags until task 7
+- Always show diff before applying multi-file changes
+- Five agents always run in order — never reorder or skip
+- web/index.html must remain a single file
+- Anonymization happens in Intake before any content is read —
+  this ordering is a hard security requirement
