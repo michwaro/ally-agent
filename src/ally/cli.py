@@ -1,6 +1,7 @@
 """Command-line interface for Ally."""
 
 import typer
+import uvicorn
 from rich.console import Console
 
 app = typer.Typer(help="Analyze anonymous community accountability reports.")
@@ -25,8 +26,9 @@ def submit(
 
 @app.command()
 def serve() -> None:
-    """Start the Ally server placeholder."""
-    console.print("Server starting... (coming in Task 3)")
+    """Start the Ally server."""
+    console.print("Serving Ally at http://127.0.0.1:8765")
+    uvicorn.run("ally.server:app", host="127.0.0.1", port=8765)
 
 
 def main() -> None:
